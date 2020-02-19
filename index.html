@@ -190,7 +190,7 @@
       
       
       if(  embaData.qtaCommessaAttuale > qtaCommessaAttualeLast[embaId] || (embaData.qtaCommessaAttuale > 0 && qtaCommessaAttualeLast[embaId]==undefined) ) {
-        document.getElementById(`emba${embaId}ProduzioneOk`).innerHTML = '<i class="fas fa-circle animated infinite fadeIn fa-lg text-success bg-none"></i>';
+        document.getElementById(`emba${embaId}ProduzioneOk`).innerHTML = '<i class="fas fa-circle fa-lg text-success"></i>';
       } else {
         document.getElementById(`emba${embaId}ProduzioneOk`).innerHTML = '<i class="fas fa-circle fa-lg text-danger"></i>';
       }
