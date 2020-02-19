@@ -170,9 +170,10 @@
       mqtH.innerHTML = embaData.mqOraDaInizioTurno;
       
       var embaFermoSetup = document.getElementById(`emba${embaId}FermoSetup`);
-      if(embaData.fermo && embaData.setup) {
+      
+      if(embaData.inFermo && embaData.inSetup) {
         embaFermoSetup.innerHTML = '<i class="col-12 fas fa-cog fa-spin fa-3x text-warning"></i>';
-      } else if(embaData.fermo && !embaData.setup) {
+      } else if(embaData.inFermo && !embaData.inSetup) {
         embaFermoSetup.innerHTML = '<i class="fas fa-exclamation-triangle fa-3x text-danger"></i>';
       } else {
         embaFermoSetup.innerHTML = "";
