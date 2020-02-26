@@ -45,6 +45,32 @@
 <body>
    
     <div class="container-fluid h-100">
+
+<!--MACCHINA START-->
+ <div class="row p-3">
+  <div class="col-12 d-flex ">
+    <div class="justify-content-center align-self-center mx-auto">
+      <div class="row mt-2">
+        <div class="col-12 cartTitle bg-light text-center" >ONDULATORE</div>
+      </div>
+      <div class="row mt-3 no-gutters">
+        <div class="col-10 row no-gutters">
+          <div class="col-12 row no-gutters "><div class="col-6 cardValueLegend text-secondary text-left">Produz. (m)</div><div class="col-6 cardValue text-center" id="Ondu1Prod"></div></div>
+          <div class="col-12 row no-gutters "><div class="col-6 cardValueLegend text-secondary text-left">Vm (m/min)</div><div class="col-6 cardValue text-center" id="Ondu1AvgSpeed"></div></div>
+          <div class="col-12 row no-gutters "><div class="col-6 cardValueLegend text-secondary text-left">V (m/min)</div><div class="col-6 cardValue text-center" id="Ondu1Speed"></div></div>
+          <div class="col-12 row no-gutters "><div class="col-6 cardValueLegend text-secondary text-left">Fermo (min)</div><div class="col-6 cardValue text-center text-danger" id="Ondu1Fermo"></div></div>
+        </div>
+        <div class="col-2 d-flex text-center row no-gutters">
+          <div class="col-12 bg-none" id="Ondu1ProduzioneOk">
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--MACCHINA END-->
+
  <!--MACCHINA START-->
  <div class="row p-3">
   <div class="col-12 d-flex ">
@@ -159,6 +185,12 @@
           handleEmba(e[0], e[1], data);
       });
     });
+    var ondu = firebase.database().ref('Ondu/Ondu1');
+    ondu.on('value', function(snapshot) {
+        var data = snapshot.val();
+        handleOndu(data);
+    });
+
     var qtaCommessaAttualeLast = {}
     function handleEmba(embaId, embaMqhTH, embaData) {
       
@@ -196,6 +228,41 @@
       }
       qtaCommessaAttualeLast[embaId] = embaData.qtaCommessaAttuale;
       
+    }
+
+    var onduTotaleProdLast = -1;
+    const speedLevels = [200, 240];
+    function handleOndu(data) {
+      console.log(data);
+      document.getElementById(`Ondu1Speed`).innerHTML = data.speed;
+      // document.getElementById(`Ondu1AvgSpeed`).innerHTML = data.avgSpeed;
+      document.getElementById(`Ondu1Fermo`).innerHTML = data.stop;
+      document.getElementById(`Ondu1Prod`).innerHTML = data.meters;
+
+      var avgSp =  document.getElementById(`Ondu1AvgSpeed`);
+      
+      if( data.avgSpeed >= speedLevels[1] ) {
+        avgSp.classList.remove('text-warning');
+        avgSp.classList.remove('text-danger');
+        avgSp.classList.add('text-success');
+      } else if(data.avgSpeed >= speedLevels[0]) {
+        avgSp.classList.remove('text-success');
+        avgSp.classList.remove('text-danger');
+        avgSp.classList.add('text-warning');
+      } else {
+        avgSp.classList.remove('text-success');
+        avgSp.classList.remove('text-warning');
+        avgSp.classList.add('text-danger');
+      }
+
+      avgSp.innerHTML = data.avgSpeed;
+
+      if(  data.meters > onduTotaleProdLast ) {
+        document.getElementById(`Ondu1ProduzioneOk`).innerHTML = '<i class="fas fa-circle fa-lg text-success"></i>';
+      } else {
+        document.getElementById(`Ondu1ProduzioneOk`).innerHTML = '<i class="fas fa-circle fa-lg text-danger"></i>';
+      }
+      onduTotaleProdLast = data.meters;
     }
     
 </script>
