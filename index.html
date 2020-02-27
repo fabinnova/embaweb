@@ -233,36 +233,43 @@
     var onduTotaleProdLast = -1;
     const speedLevels = [200, 240];
     function handleOndu(data) {
-      console.log(data);
-      document.getElementById(`Ondu1Speed`).innerHTML = data.speed;
-      // document.getElementById(`Ondu1AvgSpeed`).innerHTML = data.avgSpeed;
-      document.getElementById(`Ondu1Fermo`).innerHTML = data.stop;
-      document.getElementById(`Ondu1Prod`).innerHTML = data.meters;
 
-      var avgSp =  document.getElementById(`Ondu1AvgSpeed`);
-      
-      if( data.avgSpeed >= speedLevels[1] ) {
-        avgSp.classList.remove('text-warning');
-        avgSp.classList.remove('text-danger');
-        avgSp.classList.add('text-success');
-      } else if(data.avgSpeed >= speedLevels[0]) {
-        avgSp.classList.remove('text-success');
-        avgSp.classList.remove('text-danger');
-        avgSp.classList.add('text-warning');
-      } else {
-        avgSp.classList.remove('text-success');
-        avgSp.classList.remove('text-warning');
-        avgSp.classList.add('text-danger');
-      }
+      if(data!=undefined && data.speed!=undefined
+      && data.avgSpeed != undefined && data.stop!=undefined
+       && data.meters != undefined) {
 
-      avgSp.innerHTML = data.avgSpeed;
+         document.getElementById(`Ondu1Speed`).innerHTML = data.speed;
+         // document.getElementById(`Ondu1AvgSpeed`).innerHTML = data.avgSpeed;
+         document.getElementById(`Ondu1Fermo`).innerHTML = data.stop;
+         document.getElementById(`Ondu1Prod`).innerHTML = data.meters;
+   
+         var avgSp =  document.getElementById(`Ondu1AvgSpeed`);
+         
+         if( data.avgSpeed >= speedLevels[1] ) {
+           avgSp.classList.remove('text-warning');
+           avgSp.classList.remove('text-danger');
+           avgSp.classList.add('text-success');
+         } else if(data.avgSpeed >= speedLevels[0]) {
+           avgSp.classList.remove('text-success');
+           avgSp.classList.remove('text-danger');
+           avgSp.classList.add('text-warning');
+         } else {
+           avgSp.classList.remove('text-success');
+           avgSp.classList.remove('text-warning');
+           avgSp.classList.add('text-danger');
+         }
+   
+         avgSp.innerHTML = data.avgSpeed;
+   
+         if( data.meters > onduTotaleProdLast ) {
+           document.getElementById(`Ondu1ProduzioneOk`).innerHTML = '<i class="fas fa-circle fa-lg text-success"></i>';
+         } else {
+           document.getElementById(`Ondu1ProduzioneOk`).innerHTML = '<i class="fas fa-circle fa-lg text-danger"></i>';
+         }
+         onduTotaleProdLast = data.meters;
 
-      if(  data.meters > onduTotaleProdLast ) {
-        document.getElementById(`Ondu1ProduzioneOk`).innerHTML = '<i class="fas fa-circle fa-lg text-success"></i>';
-      } else {
-        document.getElementById(`Ondu1ProduzioneOk`).innerHTML = '<i class="fas fa-circle fa-lg text-danger"></i>';
-      }
-      onduTotaleProdLast = data.meters;
+       }
+       
     }
     
 </script>
